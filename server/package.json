@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "v1",
+  "description": "Aplicacion de recetas aplicando el patro MVC",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "build": "babel src -d lib"
+  },
+  "author": "Ruben Valencia",
+  "license": "MIT",
+  "dependencies": {
+    "cor": "^0.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.1",
+    "sqlite3": "^5.1.6",
+    "sweetalert2": "^11.7.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/node": "^7.22.5",
+    "@babel/preset-env": "^7.18.10",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^2.0.22"
+  }
+}

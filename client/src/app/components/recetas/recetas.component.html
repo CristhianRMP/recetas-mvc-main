@@ -1,0 +1,372 @@
+<ul role="list" class="divide-y divide-gray-100">
+  <li class="flex justify-between gap-x-6 py-5">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Nombre receta</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Dificultad</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Autor</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Telefono</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Correo</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Imagenes</p>
+          </th>
+          <th>
+            <p class="text-sm leading-6 text-gray-900">Acciones</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let datoRec of srvRecetas.almacenadorD">
+          <td style="border-color: #2c1611">
+            {{ datoRec.str_receta_nombre }}
+          </td>
+          <td>
+            {{ datoRec.str_receta_dificultad }}
+          </td>
+          <td>
+            {{ datoRec.str_autor_nombre }}
+          </td>
+          <td>
+            {{ datoRec.str_autor_telefono }}
+          </td>
+          <td>
+            {{ datoRec.str_autor_correo }}
+          </td>
+          <td>
+            <div class="flex items-center justify-center gap-x-6">
+              <img
+                class="h-16 w-16"
+                src="{{ datoRec.str_receta_image }}"
+                alt=""
+              />
+            </div>
+          </td>
+          <td>
+            <div class="but">
+              <button
+                type="button"
+                (click)="verReceta(datoRec.id_receta)"
+                style="
+                  background-color: #2c1611;
+                  color: #000000;
+                  width: 30px;
+                  border-radius: 5px;
+                  height: 25px;
+                "
+                onmouseover="this.style.backgroundColor='#CF3A58'; this.style.color='#FFFFFF';"
+                onmouseout="this.style.backgroundColor='#E7B3A4'; this.style.color='#000000';"
+              >
+                <i class="material-icons">remove_red_eye</i>
+              </button>
+
+              <button
+              *ngIf="mostarAciones"
+                type="button"
+                (click)="getRecetaId(datoRec.id_receta)"
+                style="
+                  background-color: #2c1611;
+                  color: #000000;
+                  width: 30px;
+                  border-radius: 5px;
+                  height: 25px;
+                "
+                onmouseover="this.style.backgroundColor='#CF3A58'; this.style.color='#FFFFFF';"
+                onmouseout="this.style.backgroundColor='#E7B3A4'; this.style.color='#000000';"
+              >
+                <i class="material-icons">create</i>
+              </button>
+
+              <button
+                *ngIf="mostarAciones"
+                type="button"
+                style="
+                  background-color: gray;
+                  color: #000000;
+                  width: 30px;
+                  border-radius: 5px;
+                  height: 25px;
+                "
+                onmouseover="this.style.backgroundColor='#CF3A58'; this.style.color='#FFFFFF';"
+                onmouseout="this.style.backgroundColor='#E7B3A4'; this.style.color='#000000';"
+                (click)="eliminarReceta(datoRec.id_receta)"
+              >
+                <i class="material-icons">delete</i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<div
+  *ngIf="showModal" 
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+>
+  <div class="relative w-auto my-6 mx-auto max-w-6xl">
+    <!--content-->
+    <div
+      class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+    >
+      <!--header-->
+      <div
+        class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+      >
+        <h3 class="text-3xl font-semibold">Editar Info receta</h3>
+        <button
+          class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="toggleModal()"
+        >
+          <span
+            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+          >
+            ×
+          </span>
+        </button>
+      </div>
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+        <form autocomplete="off" [formGroup]="myForm" novalidate>
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+              <label
+                for="first_name"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Nombre Receta</label
+              >
+              <input
+                type="text"
+                id="first_name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John"
+                required
+                value="{{ dataReceta.str_receta_nombre }}"
+                formControlName="str_receta_nombre"
+              />
+            </div>
+            <div>
+              <label
+                for="last_name"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Autor</label
+              >
+              <input
+                type="text"
+                id="last_name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Doe"
+                required
+                value="{{ dataReceta.str_autor_nombre }}"
+                formControlName="str_autor_nombre"
+              />
+            </div>
+            <div>
+              <label
+                for="phone"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Telefono</label
+              >
+              <input
+                type="tel"
+                id="phone"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="123-45-678"
+                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                required
+                value="{{ dataReceta.str_autor_telefono }}"
+                formControlName="str_autor_telefono"
+              />
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Correo</label
+              >
+              <input
+                type="email"
+                id="email"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="john.doe@company.com"
+                required
+                value="{{ dataReceta.str_autor_correo }}"
+                formControlName="str_autor_correo"
+              />
+            </div>
+            <div>
+              <label
+                for="first_name"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Url Imagen</label
+              >
+              <input
+                type="text"
+                id="first_name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="http://localhost:4200/recetas"
+                required
+                value="{{ dataReceta.str_receta_image }}"
+                formControlName="str_receta_image"
+              />
+            </div>
+            <div class="flex items-center justify-center gap-x-6">
+              <img
+                class="h-16 w-16"
+                src="{{ dataReceta.str_receta_image }}"
+                alt=""
+              />
+            </div>
+          </div>
+          <div>
+            <div>
+              <label
+                for="message"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Preparación</label
+              >
+              <textarea
+                id="message"
+                rows="3"
+                class="block p-2.5 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Escriba aquí su preparación..."
+                value="{{ dataReceta.str_receta_preparacion }}"
+                formControlName="str_receta_preparacion"
+              ></textarea>
+            </div>
+            <div>
+              <label
+                for="first_name"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Dificultad de la receta</label
+              >
+              <input
+                type="text"
+                id="dificultad"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Moderada"
+                required
+                value="{{ dataReceta.str_receta_dificultad }}"
+                formControlName="str_receta_dificultad"
+              />
+            </div>
+
+             <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Correo</label
+              >
+              <input
+                type="email"
+                id="email"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="john.doe@company.com"
+                required
+                value="{{ dataReceta.str_autor_correo }}"
+                formControlName="str_autor_correo"
+              />
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!--footer-->
+      <div
+        class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+      >
+        <button
+          class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          (click)="toggleModal()"
+        >
+          Close
+        </button>
+
+        <button
+          (click)="actualizarReceta(dataReceta.id_receta)"
+          class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        >
+          Actualizar Receta
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+
+<!-- Ver receta -->
+
+<div
+  *ngIf="verRecetaModal"
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+>
+  <div class="relative w-auto my-6 mx-auto max-w-6xl">
+    <!--content-->
+    <div
+      class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+    >
+      <!--header-->
+      <div
+        class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+      >
+        <h3 class="text-3xl font-semibold">Detalle de Receta</h3>
+        <button
+          class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="toggleModal2()"
+        >
+          <span
+            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+          >
+            ×
+          </span>
+        </button>
+      </div>
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+        <h2>{{ dataReceta.str_receta_nombre }}</h2>
+      </div>
+
+      <div class="flex items-center justify-center gap-x-6">
+        <img
+          class="h-16.5 w-16.5"
+          src="{{ dataReceta.str_receta_image }}"
+          alt=""
+        />
+      </div>
+
+      <div class="relative p-6 flex-auto">
+        <p>{{ dataReceta.str_receta_preparacion }}</p>
+      </div>
+      <!--footer-->
+      <div
+        class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+      >
+        <button
+          class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          (click)="toggleModal2()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="verRecetaModal"
+  class="opacity-25 fixed inset-0 z-40 bg-black"
+></div>
+
+<!-- eliminar receta -->

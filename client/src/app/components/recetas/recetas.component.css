@@ -1,0 +1,11 @@
+.text-sm
+{
+    width: 188px;
+}
+
+.but
+{
+    display: flex;
+    gap: 1.5px;
+    justify-content: center;
+}
